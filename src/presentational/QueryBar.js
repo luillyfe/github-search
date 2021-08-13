@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -24,8 +24,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function QueryBar() {
+export default function QueryBar({submitQuery}) {
   const classes = useStyles();
+  const [query, setQuery] = useState("")
+
+  function handleChange(event) {
+    setQuery(event.target.value)
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    submitQuery(query)
+  }
 
   return (
     <div className={classes.root}>
@@ -35,11 +45,13 @@ export default function QueryBar() {
           <Typography variant="h6" className={classes.title}>
             Github User List
           </Typography>
-          <form className={classes.form} noValidate autoComplete="off">
+          <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
             <TextField
               id="query"
               label="Input query"
               variant="outlined"
+              value={query}
+              onChange={handleChange}
             />
           </form>
         </Toolbar>

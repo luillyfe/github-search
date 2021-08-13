@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -18,13 +18,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserList() {
+// TODO: promote to presentational component
+export default function UserList({ users }) {
   const classes = useStyles();
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    getUsers("fermin", setUsers)
-  }, [])
 
   return (
     <List className={classes.root}>
@@ -48,7 +44,7 @@ export default function UserList() {
                       >
                         Ali Connors
                       </Typography>
-                      {'some text'}
+                      {"some text"}
                     </Fragment>
                   }
                 />
@@ -59,11 +55,4 @@ export default function UserList() {
         })}
     </List>
   );
-}
-
-async function getUsers(query, setState) {
-  const url = 'https://api.github.com/search/users';
-  const response = await fetch(`${url}?q=${query}`).then(res => res.json());
-  console.log(response.items);
-  setState(response.items)
 }
