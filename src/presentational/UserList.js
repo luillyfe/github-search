@@ -19,14 +19,16 @@ const useStyles = makeStyles((theme) => ({
   },
   pagination: {
     justifyContent: "space-between",
-    position: "relative",
-    top: '38em'
+    position: "sticky",
   },
 }));
 
-// TODO: promote to presentational component
-export default function UserList({ users }) {
+export default function UserList({ users, currentPage = 1, fetchPage }) {
   const classes = useStyles();
+
+  function handleChange(_, page) {
+    fetchPage(page);
+  }
 
   return (
     <Fragment>
@@ -61,7 +63,20 @@ export default function UserList({ users }) {
             );
           })}
       </List>
-      <Pagination count={10} classes={{ ul: classes.pagination }} />
+      {/*
+      TODO: should be aware of pages count to show
+      TODO: Pagination should go to total count (Current navigation go to 10 )
+      */}
+      {users && users.length ? (
+        <Pagination
+          count={10}
+          classes={{ ul: classes.pagination }}
+          page={currentPage}
+          onChange={handleChange}
+        />
+      ) : (
+        <div />
+      )}
     </Fragment>
   );
 }

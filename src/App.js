@@ -4,18 +4,30 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import UserList from "./presentational/UserList";
 import QueryBar from "./presentational/QueryBar";
+import { fetchUserPage } from "./utils";
+
+const initialState = {
+  users: [],
+  currentPage: 1,
+  query: "",
+};
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [state, setState] = useState(initialState);
 
-  function getUsers(query) {
-    fetchUsers(query)
-      .then((users) => {
-        setUsers(users)
+  function getUsers(query, pageNumber) {
+    fetchUserPage(query, pageNumber)
+      .then((currenUsers) => {
+        setState({ query, users: currenUsers, currentPage: pageNumber });
       })
       .catch((err) => console.error(err));
   }
 
+  function fetchPage(pageNumber) {
+    getUsers(state.query, pageNumber);
+  }
+
+  const { users, currentPage } = state;
   return (
     <Fragment>
       <CssBaseline />
@@ -26,18 +38,15 @@ function App() {
           style={{ backgroundColor: "#cfe8fc", height: "100vh" }}
         >
           <QueryBar submitQuery={getUsers} />
-          <UserList users={users} />
+          <UserList
+            users={users}
+            currentPage={currentPage}
+            fetchPage={fetchPage}
+          />
         </Typography>
       </Container>
     </Fragment>
   );
-}
-
-async function fetchUsers(query) {
-  const url = "https://api.github.com/search/users";
-  const response = await fetch(`${url}?q=${query}&per_page=10`).then((res) => res.json());
-
-  return response.items;
 }
 
 export default App;
