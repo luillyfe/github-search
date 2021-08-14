@@ -35,7 +35,7 @@ function App() {
 
 async function fetchUsers(query) {
   const url = "https://api.github.com/search/users";
-  const response = await fetch(`${url}?q=${query}`).then((res) => res.json());
+  const response = await fetch(`${url}?q=${query}&per_page=10`).then((res) => res.json());
 
   return response.items;
 }
