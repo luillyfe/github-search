@@ -6,5 +6,5 @@ export async function fetchUserPage(query, page = 1) {
     `${url}?q=${query}&per_page=${limit}&page=${page}`
   ).then((res) => res.json());
 
-  return response.items;
+  return { users: response.items, totalCount: response.total_count };
 }

@@ -10,6 +10,7 @@ const initialState = {
   users: [],
   currentPage: 1,
   query: "",
+  totalCount: 0
 };
 
 function App() {
@@ -17,8 +18,8 @@ function App() {
 
   function getUsers(query, pageNumber) {
     fetchUserPage(query, pageNumber)
-      .then((currenUsers) => {
-        setState({ query, users: currenUsers, currentPage: pageNumber });
+      .then(({ users, totalCount }) => {
+        setState({ query, users, currentPage: pageNumber, totalCount });
       })
       .catch((err) => console.error(err));
   }
@@ -27,7 +28,7 @@ function App() {
     getUsers(state.query, pageNumber);
   }
 
-  const { users, currentPage } = state;
+  const { users, currentPage, totalCount } = state;
   return (
     <Fragment>
       <CssBaseline />
@@ -42,6 +43,7 @@ function App() {
             users={users}
             currentPage={currentPage}
             fetchPage={fetchPage}
+            totalCount={totalCount}
           />
         </Typography>
       </Container>
