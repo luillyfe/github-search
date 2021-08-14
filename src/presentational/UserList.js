@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -27,7 +27,7 @@ export default function UserList({ users, currentPage = 1, fetchPage }) {
   const classes = useStyles();
 
   function handleChange(_, page) {
-    fetchPage(page)
+    fetchPage(page);
   }
 
   return (
@@ -63,7 +63,10 @@ export default function UserList({ users, currentPage = 1, fetchPage }) {
             );
           })}
       </List>
-      {/*TODO: should be aware of pages count to show */}
+      {/*
+      TODO: should be aware of pages count to show
+      TODO: Pagination should go to total count (Current navigation go to 10 )
+      */}
       {users && users.length ? (
         <Pagination
           count={10}
