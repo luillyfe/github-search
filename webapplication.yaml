@@ -6,7 +6,7 @@ resources:
   - name: web-bucket
     type: webbucket.jinja
     properties:
-      deployName: web-application5
+      deployName: web-application
       bucketName: 'luillyfe'
 
   - name: external-https-load-balancer
