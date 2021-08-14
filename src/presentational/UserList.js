@@ -21,10 +21,21 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     position: "sticky",
   },
+  totalCount: {
+    textAlign: "right",
+  },
 }));
 
-export default function UserList({ users, currentPage = 1, fetchPage }) {
+export default function UserList({
+  users,
+  currentPage = 1,
+  fetchPage,
+  totalCount,
+}) {
   const classes = useStyles();
+  // "Only the first 1000 search results are available"
+  const limitCountGithubAPI = 1000;
+  const showPagination = users && users.length;
 
   function handleChange(_, page) {
     fetchPage(page);
@@ -33,6 +44,14 @@ export default function UserList({ users, currentPage = 1, fetchPage }) {
   return (
     <Fragment>
       <List className={classes.root}>
+        {showPagination ? (
+          <div className={classes.totalCount}>
+            Showing {currentPage * 10 - 9}-{currentPage * 10} of {totalCount}{" "}
+            results
+          </div>
+        ) : (
+          <div />
+        )}
         {users &&
           users.map(({ login: name, id, avatar_url: picture }) => {
             return (
@@ -63,13 +82,9 @@ export default function UserList({ users, currentPage = 1, fetchPage }) {
             );
           })}
       </List>
-      {/*
-      TODO: should be aware of pages count to show
-      TODO: Pagination should go to total count (Current navigation go to 10 )
-      */}
-      {users && users.length ? (
+      {showPagination ? (
         <Pagination
-          count={10}
+          count={limitCountGithubAPI / 10}
           classes={{ ul: classes.pagination }}
           page={currentPage}
           onChange={handleChange}
