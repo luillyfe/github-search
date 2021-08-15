@@ -8,6 +8,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { Pagination } from "@material-ui/lab";
+import { Link } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,9 +74,8 @@ export default function UserList({
               followers,
               following,
               location,
-               profileLink
+              profileLink,
             }) => {
-              
               return (
                 <Fragment key={id}>
                   <ListItem alignItems="flex-start">
@@ -84,7 +84,7 @@ export default function UserList({
                     </ListItemAvatar>
                     <ListItemText
                       primary={
-                        <Fragment>
+                        <Link href={profileLink}>
                           {name}
                           <Typography
                             component="span"
@@ -94,7 +94,7 @@ export default function UserList({
                           >
                             {` (${login})`}
                           </Typography>
-                        </Fragment>
+                        </Link>
                       }
                       secondary={
                         <SecondaryLabel
