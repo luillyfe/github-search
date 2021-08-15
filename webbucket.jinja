@@ -1,0 +1,43 @@
+resources:
+  # Google Cloud Storage
+  - type: gcp-types/storage-v1:buckets
+    name: {{ properties['bucketName'] }}
+    properties:
+      predefinedAcl: projectPrivate
+      projection: full
+      # Multiregional Bucket located in the United States
+      location: US
+      storageClass: STANDARD
+      defaultObjectAcl:
+        - entity: allUsers
+          role: READER
+          projectTeam:
+            team: viewers
+      cors:
+        - maxAgeSeconds: 10
+          method:
+            - GET
+            - OPTIONS
+          origin:
+            - '*'
+          responseHeader:
+            - Content-Type
+            - Last-Modified
+            - Expires
+      lifecycle:
+        rule:
+          - action:
+              type: Delete
+            condition:
+              age: 30
+              isLive: true
+          - action:
+              type: Delete
+            condition:
+              isLive: false
+              numNewerVersions: 3
+      versioning:
+        enabled: true
+      website:
+        mainPageSuffix: index.html
+        notFoundPage: index.html

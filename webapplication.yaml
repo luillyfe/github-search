@@ -1,0 +1,20 @@
+imports:
+  - path: webbucket.jinja
+  - path: httpsLoadBalancer.jinja
+
+resources:
+  - name: web-bucket
+    type: webbucket.jinja
+    properties:
+      deployName: web-application
+      bucketName: 'luillyfe'
+
+  - name: external-https-load-balancer
+    type: httpsLoadBalancer.jinja
+    properties:
+      deployName: web-application
+      bucketName: 'luillyfe'
+      domain: 'luillyfe.io'
+    metadata:
+      dependsOn:
+        - web-bucket
