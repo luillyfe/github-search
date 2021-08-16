@@ -20,7 +20,7 @@ Re-implements a portion of the GitHub's Search feature, the user search.
     - Web bucket (public access)
 
 ## How to deploy to Google Cloud
-
+- **gcloud deployment-manager deployments create web-application --config webapplication.yaml**
 - **yarn build**
 - **gcloud rsync -R build gs://`${yourBucketName}`**
 
