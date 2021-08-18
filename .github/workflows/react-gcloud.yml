@@ -1,0 +1,36 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run node,
+# uploads files/folders to a Google Cloud Storage (GCS) bucket. This is useful when you want upload build artifacts from your workflow.
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm install
+    - run: npm run build
+    
+    - id: upload-files
+      uses: google-github-actions/upload-cloud-storage@main
+      with:
+        parent: false
+        path: build
+        credentials: ${{ secrets.CLOUD_STORAGE_CREDENTIALS }}
+        destination: luillyfe
