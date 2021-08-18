@@ -2,7 +2,7 @@
 # uploads files/folders to a Google Cloud Storage (GCS) bucket. This is useful when you want upload build artifacts from your workflow.
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: Google Cloud Storage CD
 
 on:
   push:
@@ -34,3 +34,13 @@ jobs:
         path: build
         credentials: ${{ secrets.CLOUD_STORAGE_CREDENTIALS }}
         destination: luillyfe
+    
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        credentials: ${{ secrets.CLOUD_STORAGE_CREDENTIALS }}
+        export_default_credentials: true
+
+    - name: Use gcloud CLI
+      run: gcloud compute url-maps invalidate-cdn-cache web-application-lb --path "/*"
