@@ -39,7 +39,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@master
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
-        credentials: ${{ secrets.CLOUD_STORAGE_CREDENTIALS }}
+        service_account_key: ${{ secrets.CLOUD_STORAGE_CREDENTIALS }}
         export_default_credentials: true
 
     - name: Use gcloud CLI
